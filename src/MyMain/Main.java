@@ -17,49 +17,13 @@ import subgraph.LinearRoute;
 public class Main {
 
 	public static void main(String[] args) {
-		String filename="E:/ZYX/Topology/5.csv";
-//		String filename="G:/Topology/5.csv";
+		String filename="E:/ZYX/Topology/cost239.csv";
+//		String filename="G:/Topology/cost239.csv";
 		Layer mylayer=new Layer(null, 0, null);
 		mylayer.readTopology(filename);
 		mylayer.generateNodepairs(); 
 		File_output fileout=new  File_output();
-		//为nodepair编号
-
-		int serial=0;
-		HashMap<String,Integer> nodepair_serial=new HashMap<String,Integer>();
-		HashMap<String, NodePair> Snodepair = mylayer.getNodepairlist();
-		Iterator<String> iter1 = Snodepair.keySet().iterator();
-		while (iter1.hasNext()) 
-		{
-			NodePair nodepairser=(NodePair) (Snodepair.get(iter1.next()));
-			nodepair_serial.put(nodepairser.getName(),serial);
-			serial++;
-		}
-		
-		//通过产生的序号产生nodepair
-		randomfunction radom=new randomfunction();
-		int[] nodepair_num=radom.Dif_random(10, mylayer.getNodepairNum());//随机产生nodepair的数目
-		int has=0;
-		ArrayList<LinearRoute> routelist_once=new ArrayList<LinearRoute>();
-		ArrayList<NodePair> nodepairlist= new ArrayList<NodePair>();
-		HashMap<String, NodePair> map = mylayer.getNodepairlist();
-		Iterator<String> iter = map.keySet().iterator();
-		while (iter.hasNext()) 
-		{
-			has=0;
-			routelist_once.clear();
-			NodePair nodepair=(NodePair) (map.get(iter.next()));
-
-			for(int a=0;a<nodepair_num.length;a++){
-				if(nodepair_num[a]==nodepair_serial.get(nodepair.getName())){
-					has=1;
-					break;
-				}		
-			}
-			if(has==0) continue;//随机产生demand
-			nodepairlist.add(nodepair);
-		}
-		 
+ 
 		//产生所有的环
 		ArrayList<Cycle> cyclelist=new ArrayList<Cycle>();
 		RouteSearching shortestpath=new RouteSearching(); 
@@ -84,25 +48,25 @@ public class Main {
 		for(int b=0;b<cyclelist.size();b++){
 			 Cycle nowcycle=cyclelist.get(b);
 			 double nowae=AeList.get(nowcycle.toString());
-			 if(nowae>2){
+			 if(nowae>6000){
 				 newcyclelist.add(nowcycle); 
 			 }
 		 }
-		
 		CO.cycleoutput(newcyclelist, "F:\\programFile\\p+mixed\\newCycle.dat");
-
-		///*
+		ArrayList<NodePair> nodepairlist = new ArrayList<NodePair>();
+		nodepairlist=fileout.readDemand(mylayer, "D:/cost239280circle.csv");
+	
 		//判断哪些节点对可以被哪些环保护
 		ArrayList<NodePairProtect> NodeAndProRoute=new ArrayList<NodePairProtect>();
 		CycleProtectNodepair CPN=new CycleProtectNodepair();
 		NodeAndProRoute=CPN.cycleprotectnodepair(nodepairlist, newcyclelist,mylayer);
 		//可以输出所有节点对及其对应的保护环
 		for(NodePairProtect nodepairprotect:NodeAndProRoute){
-			fileout.filewrite("F:\\programFile\\p+mixed\\NodeAndProtectCycle2.dat", nodepairprotect.getnodepair().getName());		 
+			fileout.filewrite("F:\\programFile\\p+mixed\\NodeAndProtectCycle.dat", nodepairprotect.getnodepair().getName());		 
 			fileout.filewrite("F:\\programFile\\p+mixed\\WorkRoute.dat", nodepairprotect.getnodepair().getName());		 
 			nodepairprotect.getworkroute().OutputRoute_node(nodepairprotect.getworkroute(), "F:\\programFile\\p+mixed\\WorkRoute.dat");
 			fileout.filewrite("F:\\programFile\\p+mixed\\WorkRoute.dat", "\r\n");		 
-			CO.cycleoutput(nodepairprotect.getcyclelist(), "F:\\programFile\\p+mixed\\NodeAndProtectCycle2.dat");
+			CO.cycleoutput(nodepairprotect.getcyclelist(), "F:\\programFile\\p+mixed\\NodeAndProtectCycle.dat");
 			}
 		//输出R1R2
 		WriteR1R2 write1=new WriteR1R2();
@@ -123,17 +87,17 @@ public class Main {
 //		 /*
 		//输出demand nodepair	
 		
-				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", "param  WorkingDemand :=");
+//				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", "param  WorkingDemand :=");
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", "set D :=");
 				for(NodePairProtect nodepairprotect:NodeAndProRoute){
 					fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", nodepairprotect.getnodepair().getName());
-					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", nodepairprotect.getnodepair().getName());
-					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", "   ");
-					int demand=(int) (Math.random()*10+1);
-					fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", demand);	
+//					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", nodepairprotect.getnodepair().getName());
+//					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", "   ");
+//					int demand=(int) (Math.random()*10+1);
+//					fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", demand);	
 				}
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", ";");
-				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", ";");
+//				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", ";");
 
 				//set link
 				HashMap<String, Link> linkmap = mylayer.getLinklist();

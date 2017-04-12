@@ -5,34 +5,44 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import network.Layer;
+import network.Node;
 import network.NodePair;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Layer mylayer=new Layer(null, 0, null);
-		mylayer.readTopology("G:/Topology/10.csv");
+		ArrayList<NodePair> list = new ArrayList<NodePair>();
+		Layer mylayer = new Layer(null, 0, null);
+		mylayer.readTopology("G:/Topology/cost239.csv");
 		mylayer.generateNodepairs();
+		
 	
-		Test t=new Test();
-		t.readDemand(mylayer, "D:/10node150circle.csv");
-		 
+		Test t = new Test();
+		list=t.readDemand(mylayer, "D:/cost239280circle.csv");
+		
+		for(NodePair nodepair:list){
+			 System.out.println(nodepair.getName());
+		}
 	}
-	
-	public int readDemand(Layer layer, String writename) {
+
+	public ArrayList<NodePair> readDemand(Layer layer, String writename) {
+		ArrayList<NodePair> list = new ArrayList<NodePair>();
 		String[] data = new String[10];
 		File file = new File(writename);
-		
+
 		BufferedReader bufRdr = null;
 		try {
 			bufRdr = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		String line = null;
 		int col = 0;
 		try {
@@ -40,7 +50,7 @@ public class Test {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		 
+
 		// read the first title line
 		// read each line of text file
 		try {
@@ -56,28 +66,29 @@ public class Test {
 				if (name.equals("Nodepair")) {
 					Nodepair = true;
 				}
-				
+
 				// read nodes
 				if (Nodepair) {
 					if (!(name.equals("Nodepair"))) {
 						NodePair currentnodepair = layer.getNodepairlist().get(data[0]);
-						System.out.println(currentnodepair.getName());
+						list.add(currentnodepair);
+						// System.out.println(currentnodepair.getName());
 						int slotNum = Integer.parseInt(data[1]);
-//						currentnodepair.setSlotsnum(slotNum);
-						System.out.println(slotNum);
+						currentnodepair.setSlotsnum(slotNum);
+						// System.out.println(slotNum);
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			bufRdr.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return list;
 	}
 
 }
