@@ -56,10 +56,7 @@ public class CycleProtectNodepair {
 				NodeAndPro.add(mypair);
 			}			
 			}
-	    	File_output fileout=new  File_output();
-		
-	
-		return NodeAndPro;
+	    	return NodeAndPro;
 	}
 
 }

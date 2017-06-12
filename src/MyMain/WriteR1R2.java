@@ -29,7 +29,7 @@ public class WriteR1R2 {
 		for(NodePairProtect nodepairprotect:NodeAndProRoute){	
 			routelist.clear();
 			NodePair nodepair=nodepairprotect.getnodepair();
-			System.out.println("节点对："+nodepair.getName());//debug
+//			System.out.println("节点对："+nodepair.getName());//debug
 			ArrayList<Cycle> cyclelist=nodepairprotect.getcyclelist();
 			
 			for(Cycle cycle:cyclelist){
@@ -183,11 +183,12 @@ public class WriteR1R2 {
 				{
 					nodelistOnlink.clear();
 					Link link=(Link) (linklist.get(iter1.next()));
-					fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", link.getName()+"   ");
+					
 //					System.out.println(link.getName());
 					fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", nodepair.getName()+"   ");
 					route.OutputRoute_node(route, "F:\\programFile\\p+mixed\\LinkOnRoute.dat");
 					fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", "   ");
+					fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", link.getName()+"   ");
 					nodelistOnlink.add(link.getNodeA());
 					nodelistOnlink.add(link.getNodeB());
 					cross2=0;
@@ -238,12 +239,13 @@ public class WriteR1R2 {
 						{
 							nodelistOnlink.clear();
 							Link link=(Link) (linklist.get(iter1.next()));
-							fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", link.getName()+"   ");
+							
 							fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", nodepair.getName()+"   ");
 							routelist.get(m).OutputRoute_node(routelist.get(m), "F:\\programFile\\p+mixed\\LinkOnRoute.dat");
 							fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", "   ");
 							routelist.get(n).OutputRoute_node(routelist.get(n), "F:\\programFile\\p+mixed\\LinkOnRoute.dat");
 							fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", "   ");
+							fileout.filewrite_without("F:\\programFile\\p+mixed\\LinkOnRoute.dat", link.getName()+"   ");
 							nodelistOnlink.add(link.getNodeA());
 							nodelistOnlink.add(link.getNodeB());
 							cross2=0;

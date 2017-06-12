@@ -14,17 +14,17 @@ import network.Layer;
 import network.Node;
 import network.NodePair;
 
-public class Test {
+public class ReadFile {
 
 	public static void main(String[] args) {
 		ArrayList<NodePair> list = new ArrayList<NodePair>();
 		Layer mylayer = new Layer(null, 0, null);
-		mylayer.readTopology("G:/Topology/cost239.csv");
+		mylayer.readTopology("G:/Topology/NSFNET.csv");
 		mylayer.generateNodepairs();
 		
 	
-		Test t = new Test();
-		list=t.readDemand(mylayer, "D:/cost239280circle.csv");
+		ReadFile t = new ReadFile();
+		list=t.readDemand(mylayer, "D:/NSFNETalldemand.csv");
 		
 		for(NodePair nodepair:list){
 			 System.out.println(nodepair.getName());
@@ -73,8 +73,8 @@ public class Test {
 						NodePair currentnodepair = layer.getNodepairlist().get(data[0]);
 						list.add(currentnodepair);
 						// System.out.println(currentnodepair.getName());
-						int slotNum = Integer.parseInt(data[1]);
-						currentnodepair.setSlotsnum(slotNum);
+//						int slotNum = Integer.parseInt(data[1]);
+//						currentnodepair.setSlotsnum(slotNum);
 						// System.out.println(slotNum);
 					}
 				}

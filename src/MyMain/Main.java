@@ -17,8 +17,8 @@ import subgraph.LinearRoute;
 public class Main {
 
 	public static void main(String[] args) {
-		String filename="E:/ZYX/Topology/cost239.csv";
-//		String filename="G:/Topology/cost239.csv";
+//		String filename="C:/ZYX/Topology/5.csv";
+		String filename="G:/Topology/NSFNET.csv";
 		Layer mylayer=new Layer(null, 0, null);
 		mylayer.readTopology(filename);
 		mylayer.generateNodepairs(); 
@@ -39,6 +39,7 @@ public class Main {
 //		CO.cycleoutput(cyclelist, "F:\\programFile\\p+mixed\\AllCycle.dat");
 		
 		 //环是否需要减少
+		/*
 		AEofCycle AE=new AEofCycle();
 		ArrayList<Cycle> newcyclelist=new ArrayList<Cycle>();
 		double average=AE.aeofcycle(cyclelist,mylayer);
@@ -48,18 +49,20 @@ public class Main {
 		for(int b=0;b<cyclelist.size();b++){
 			 Cycle nowcycle=cyclelist.get(b);
 			 double nowae=AeList.get(nowcycle.toString());
-			 if(nowae>6000){
+			 if(nowae>7000){
 				 newcyclelist.add(nowcycle); 
 			 }
 		 }
 		CO.cycleoutput(newcyclelist, "F:\\programFile\\p+mixed\\newCycle.dat");
+		*/
 		ArrayList<NodePair> nodepairlist = new ArrayList<NodePair>();
-		nodepairlist=fileout.readDemand(mylayer, "D:/cost239280circle.csv");
-	
+//		nodepairlist=fileout.readDemand(mylayer, "C:/ZYX/5node25.csv");
+		nodepairlist=fileout.readDemand(mylayer, "D:/5node.csv");
+		
 		//判断哪些节点对可以被哪些环保护
 		ArrayList<NodePairProtect> NodeAndProRoute=new ArrayList<NodePairProtect>();
 		CycleProtectNodepair CPN=new CycleProtectNodepair();
-		NodeAndProRoute=CPN.cycleprotectnodepair(nodepairlist, newcyclelist,mylayer);
+		NodeAndProRoute=CPN.cycleprotectnodepair(nodepairlist, cyclelist,mylayer);
 		//可以输出所有节点对及其对应的保护环
 		for(NodePairProtect nodepairprotect:NodeAndProRoute){
 			fileout.filewrite("F:\\programFile\\p+mixed\\NodeAndProtectCycle.dat", nodepairprotect.getnodepair().getName());		 
@@ -75,6 +78,9 @@ public class Main {
 		Share s=new Share();
 		s.share(NodeAndProRoute);
 		
+		String outFile="F:\\programFile\\p+mixed\\commlink.dat";
+		CommonLink cl=new CommonLink();
+		cl.commonlink(mylayer, NodeAndProRoute, outFile);
 	//debug
 //		ArrayList<LinearRoute> routelist=new ArrayList<LinearRoute>();
 //		for(NodePairProtect nodepairprotect:NodeAndProRoute){		
@@ -87,17 +93,16 @@ public class Main {
 //		 /*
 		//输出demand nodepair	
 		
-//				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", "param  WorkingDemand :=");
+				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", "param  WorkingDemand :=");
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", "set D :=");
 				for(NodePairProtect nodepairprotect:NodeAndProRoute){
 					fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", nodepairprotect.getnodepair().getName());
-//					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", nodepairprotect.getnodepair().getName());
-//					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", "   ");
-//					int demand=(int) (Math.random()*10+1);
-//					fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", demand);	
+					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", nodepairprotect.getnodepair().getName());
+					fileout.filewrite_without("F:\\programFile\\p+mixed\\workingdemand.dat", "   ");
+					fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", nodepairprotect.getnodepair().getSlotsnum());
 				}
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", ";");
-//				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", ";");
+				fileout.filewrite("F:\\programFile\\p+mixed\\workingdemand.dat", ";");
 
 				//set link
 				HashMap<String, Link> linkmap = mylayer.getLinklist();
@@ -111,7 +116,7 @@ public class Main {
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", ";");
 				
 				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", "param  LargeConstant :=");
-				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", "10000;");
+				fileout.filewrite("F:\\programFile\\p+mixed\\maindat.dat", "100000;");
 //	 */
 		System.out.println("Finish");//debug
 

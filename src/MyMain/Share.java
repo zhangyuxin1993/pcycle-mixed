@@ -24,29 +24,29 @@ public class Share {
 			
 			for(int a=0;a<routelist1.size()-1;a++){
 				LinearRoute route1=routelist1.get(a);
-				System.out.println(routelist1.size());
-				System.out.println(nodepair1.getName());
-				route1.OutputRoute_node(route1);//debug
+//				System.out.println(routelist1.size());
+//				System.out.println(nodepair1.getName());
+//				route1.OutputRoute_node(route1);//debug
 				for(int b=a+1;b<routelist1.size();b++){					
 					LinearRoute route2=routelist1.get(b);
-					route2.OutputRoute_node(route2);//debug
+//					route2.OutputRoute_node(route2);//debug
 					cross=0;
 					cross=nc.nodelistcompare(route1.getNodelist(), route2.getNodelist());
 					if(cross==1) continue;
 					
 					for(NodePairProtect npp2:NodeAndProRoute){//取出另一对nodepair
 						NodePair nodepair2=npp2.getnodepair();
-					    System.out.println("节点对： "+nodepair2.getName());//debug
+//					    System.out.println("节点对： "+nodepair2.getName());//debug
 						if(nodepair2.getName().equals(nodepair1.getName())) continue;
 						ArrayList<LinearRoute> routelist2=npp2.getroutelist();
 						
 						for(int c=0;c<routelist2.size()-1;c++){	
 							LinearRoute route3=routelist2.get(c);
 							
-							route3.OutputRoute_node(route3);//debug
+//							route3.OutputRoute_node(route3);//debug
 							for(int d=c+1;d<routelist2.size();d++){					
 								LinearRoute route4=routelist2.get(d);
-								route4.OutputRoute_node(route4);//debug
+//								route4.OutputRoute_node(route4);//debug
 								cross=0;
 								cross=nc.nodelistcompare(route3.getNodelist(), route4.getNodelist());
 								if(cross==1) continue;
